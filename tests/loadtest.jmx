@@ -2,7 +2,7 @@
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="DISC Load Test" enabled="true">
-      <stringProp name="TestPlan.comments">CI load test (no scheduler)</stringProp>
+      <stringProp name="TestPlan.comments">CLI load test requiring explicit LoopController</stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments"/>
@@ -10,24 +10,29 @@
     <hashTree>
 
       <!-- Thread Group -->
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="10-User Loop Test" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="10 User Load Test" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
 
         <!-- 10 users -->
         <stringProp name="ThreadGroup.num_threads">10</stringProp>
 
-        <!-- 1 second ramp up -->
+        <!-- Ramp-up 1 second -->
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
 
-        <!-- IMPORTANT: Disable scheduler -->
+        <!-- No scheduler -->
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
 
-        <!-- Loop count -->
-        <stringProp name="ThreadGroup.loops">10</stringProp>
+        <!-- LoopController reference -->
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" enabled="true">
+          <!-- Loop users 10 times -->
+          <stringProp name="LoopController.loops">10</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+
       </ThreadGroup>
       <hashTree>
 
-        <!-- Actual HTTP Request -->
+        <!-- HTTP Sampler -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api/discs" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
