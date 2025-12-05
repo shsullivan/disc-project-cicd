@@ -2,16 +2,15 @@
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="DISC Load Test" enabled="true">
-      <stringProp name="TestPlan.comments">Minimal CI load test</stringProp>
+      <stringProp name="TestPlan.comments">CI load test (no scheduler)</stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments"/>
-      <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
 
       <!-- Thread Group -->
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="10 User Load Test" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="10-User Loop Test" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
 
         <!-- 10 users -->
@@ -20,25 +19,22 @@
         <!-- 1 second ramp up -->
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
 
-        <!-- Disable scheduler -->
+        <!-- IMPORTANT: Disable scheduler -->
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
 
-        <!-- Loop each user 10 times -->
+        <!-- Loop count -->
         <stringProp name="ThreadGroup.loops">10</stringProp>
       </ThreadGroup>
       <hashTree>
 
-        <!-- HTTP Sampler -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy"
-                          testname="GET /api/discs" enabled="true">
+        <!-- Actual HTTP Request -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api/discs" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.path">/api/discs</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
         </HTTPSamplerProxy>
         <hashTree/>
 
