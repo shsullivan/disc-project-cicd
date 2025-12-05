@@ -59,7 +59,7 @@ pipeline {
         stage('Archive Logs') {
             steps {
                 echo 'Archiving logs'
-                archiveArtifacts artifacts: 'backend/logs/*.log', fingerprint: true
+                archiveArtifacts artifacts: 'logs/*.log', fingerprint: true
             }
         }
     }
