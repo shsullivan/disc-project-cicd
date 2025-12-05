@@ -33,7 +33,7 @@ pipeline {
                     echo 'Installing frontend dependencies...'
                     bat 'npm install'
                     echo 'Building frontend with Vite...'
-                    bat 'npm run build'
+                    bat 'npx vite build'
                 }
             }
         }
