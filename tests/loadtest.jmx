@@ -36,7 +36,7 @@
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api/discs" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.port">8081</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.path">/api/discs</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
