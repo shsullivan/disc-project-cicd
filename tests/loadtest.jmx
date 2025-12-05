@@ -5,9 +5,7 @@
       <stringProp name="TestPlan.comments">Minimal CI load test</stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
-      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments">
-        <collectionProp name="Arguments.arguments"/>
-      </elementProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments"/>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
@@ -19,27 +17,21 @@
         <!-- 10 users -->
         <stringProp name="ThreadGroup.num_threads">10</stringProp>
 
-        <!-- 1 second ramp-up -->
+        <!-- 1 second ramp up -->
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
 
-        <!-- Loop forever (until duration is reached) -->
-        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <!-- Disable scheduler -->
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
 
-        <!-- 10 seconds duration -->
-        <stringProp name="ThreadGroup.duration">10</stringProp>
-
-        <stringProp name="ThreadGroup.delay">0</stringProp>
+        <!-- Loop each user 10 times -->
+        <stringProp name="ThreadGroup.loops">10</stringProp>
       </ThreadGroup>
       <hashTree>
 
         <!-- HTTP Sampler -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy"
                           testname="GET /api/discs" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-
-          <!-- Update host if needed -->
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
@@ -47,7 +39,6 @@
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.do_multipart_post">false</boolProp>
         </HTTPSamplerProxy>
         <hashTree/>
 
