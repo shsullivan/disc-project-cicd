@@ -41,6 +41,36 @@ pipeline {
             }
         }
 
+        stage('Validate JMeter Test Plan') {
+            steps {
+                echo 'Validating JMeter test plan structure...'
+
+                bat '''
+                echo ===== Showing tests folder =====
+                dir tests
+
+                echo ===== Display file contents =====
+                type tests\\loadtest.jmx
+
+                echo ===== Echoing exact JMeter path =====
+                echo "C:\\Program Files\\jmeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat"
+
+                echo ===== Dumping JMeter Test Plan Tree =====
+                "C:\\Program Files\\jmeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat" \
+                    -n \
+                    -t tests\\loadtest.jmx \
+                    -p NOPROPFILE \
+                    -l NUL \
+                    -j jmeter_tree_dump.log \
+                    2>&1
+
+                echo ===== Show JMeter log =====
+                type jmeter_tree_dump.log
+                '''
+            }
+        }
+
+
         stage('Load Test Backend') {
             steps {
                 echo 'Performing backend loadtest'
