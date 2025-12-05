@@ -40,6 +40,12 @@ pipeline {
                 archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
             }
         }
+
+        stage('Load Test Backend') {
+            steps {
+                bat 'jmeter -n -t tests/loadtest.jmx -l tests/results.jtl'
+            }
+        }
     }
 
     post {
