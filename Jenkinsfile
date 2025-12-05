@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_ENV = 'production'
-    }
-
     tools {
         maven  'Maven-3.9'
         nodejs 'NodeJSManual'
@@ -30,8 +26,6 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 dir('frontend') {
-                    echo 'Cleaning up build path'
-                    bat 'rmdir /S /Q node_modules\\.vite-temp 2>NUL || echo temp folder not found'
                     echo 'Installing frontend dependencies...'
                     bat 'npm install'
                     echo 'Building frontend with Vite...'
