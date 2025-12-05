@@ -12,11 +12,17 @@ pipeline {
 
     stages {
 
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build Backend') {
             steps {
                 dir('backend') {
                     echo 'Building backend with Maven...'
-                    sh 'mvn clean package'
+                    bat 'mvn clean package -DskipTests'
                 }
             }
         }
@@ -25,9 +31,9 @@ pipeline {
             steps {
                 dir('frontend') {
                     echo 'Installing frontend dependencies...'
-                    sh 'npm install'
+                    bat 'npm install'
                     echo 'Building frontend with Vite...'
-                    sh 'npm run build'
+                    bat 'npm run build'
                 }
             }
         }
@@ -38,15 +44,6 @@ pipeline {
                 archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
             }
         }
-
-        // Optional: add deploy stage(s) below
-        // stage('Deploy') {
-        //     steps {
-        //         echo 'Deploying application...'
-        //         // Example: sh 'scp backend/target/DISC-Project.jar user@server:/deployments/'
-        //     }
-        // }
-
     }
 
     post {
