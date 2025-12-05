@@ -34,14 +34,6 @@ pipeline {
             }
         }
 
-        stage('Start Backend') {
-            steps {
-                echo 'Starting backend service on port 8081...'
-                bat 'start /B java -jar backend\\target\\backend-0.0.1-SNAPSHOT.jar --server.port=8081'
-                sleep time: 5, unit: 'SECONDS'
-            }
-        }
-
         stage('Archive Artifacts') {
             steps {
                 echo 'Archiving build artifacts...'
@@ -49,7 +41,13 @@ pipeline {
             }
         }
 
-
+        stage('Start Backend') {
+            steps {
+                echo 'Starting backend service on port 8081...'
+                bat 'start /B java -jar backend\\target\\backend-0.0.1-SNAPSHOT.jar --server.port=8081'
+                sleep time: 5, unit: 'SECONDS'
+            }
+        }
 
         stage('Load Test Backend') {
             steps {
