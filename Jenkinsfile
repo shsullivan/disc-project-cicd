@@ -56,12 +56,11 @@ pipeline {
                 echo "C:\\Program Files\\jmeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat"
 
                 echo ===== Dumping JMeter Test Plan Tree =====
-                "C:\\Program Files\\jmeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat" \
-                    -n \
-                    -t tests\\loadtest.jmx \
-                    -p NOPROPFILE \
-                    -l NUL \
-                    -j jmeter_tree_dump.log \
+                "C:\\Program Files\\jmeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat" ^
+                    -n ^
+                    -t tests\\loadtest.jmx ^
+                    -l NUL ^
+                    -j jmeter_tree_dump.log ^
                     2>&1
 
                 echo ===== Show JMeter log =====
@@ -74,9 +73,10 @@ pipeline {
         stage('Load Test Backend') {
             steps {
                 echo 'Performing backend loadtest'
-                bat 'dir tests'
-                bat 'type tests\\loadtest.jmx'
                 bat '"C:\\Program Files\\jmeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat" -n -t tests\\loadtest.jmx -l tests\\results.jtl'
+                    }
+                }
+
 
             }
         }
