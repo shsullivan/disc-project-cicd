@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="DISC Load Test" enabled="true">
-      <stringProp name="TestPlan.comments">CLI load test requiring explicit LoopController</stringProp>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="DISC Load Test (DB Init First)" enabled="true">
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments"/>
@@ -10,36 +9,58 @@
     <hashTree>
 
       <!-- Thread Group -->
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="10 User Load Test" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="10 Users Load Test" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-
-        <!-- 10 users -->
         <stringProp name="ThreadGroup.num_threads">10</stringProp>
-
-        <!-- Ramp-up 1 second -->
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-
-        <!-- No scheduler -->
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
 
-        <!-- LoopController reference -->
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" enabled="true">
-          <!-- Loop users 10 times -->
+        <!-- Loop Controller drives the load test -->
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" enabled="true">
           <stringProp name="LoopController.loops">10</stringProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
-
       </ThreadGroup>
       <hashTree>
 
-        <!-- HTTP Sampler -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api/discs" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
+        <!-- DB INITIALIZATION REQUEST (runs ONCE per thread at loop start) -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy"
+                          testname="DB Init POST /api/db" enabled="true">
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">8081</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.path">/api/db</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <stringProp name="Argument.value">
+{
+  "host": "localhost",
+  "port": "3306",
+  "username": "root",
+  "password": "Maehem2025!"
+}
+                </stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+
+          <stringProp name="HTTPSampler.postBodyRaw">true</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+
+        <!-- MAIN API LOAD TEST (runs 10 × 10 = 100 times) -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy"
+                          testname="GET /api/discs" enabled="true">
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
           <stringProp name="HTTPSampler.port">8081</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.path">/api/discs</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
         </HTTPSamplerProxy>
         <hashTree/>
 
