@@ -7,6 +7,7 @@ import com.sullivan.disc.dto.ImportResultDTO;
 import com.sullivan.disc.model.Disc;
 import com.sullivan.disc.service.DiscService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ import java.util.Optional;
         "http://localhost:5174",
         "http://localhost:5173"
 }) // Vite dev server port
+@Slf4j
 @RestController
 @RequestMapping("/api/discs")
 public class DiscController {
@@ -62,7 +64,23 @@ public class DiscController {
      */
     @GetMapping
     public List<DiscDTO> getAllDiscs() {
-        return discService.getAllDiscs();
+
+        long start = System.currentTimeMillis();
+        log.info("GET /api/discs request received");
+
+        try{
+            List<DiscDTO> discDTOs = discService.getAllDiscs();
+
+            long duration = System.currentTimeMillis() - start;
+            log.info("GET /api/discs request succesful in {}ms, count: {}", duration, discDTOs.size());
+
+            return discDTOs;
+        }
+        catch (Exception e) {
+            long duration = System.currentTimeMillis() - start;
+            log.error("GET /api/discs request failed after {}ms: {}", duration, e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**

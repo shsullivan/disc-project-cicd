@@ -2,6 +2,7 @@ package com.sullivan.disc.controller;
 
 import com.sullivan.disc.dto.DbLoginRequestDTO;
 import com.sullivan.disc.util.CustomDataSourceManager;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
         "http://localhost:5174",
         "http://localhost:5173"
 })
+@Slf4j
 @RestController
 @RequestMapping("/api/db")
 public class DbConnectionController {
@@ -42,11 +44,18 @@ public class DbConnectionController {
      */
     @PostMapping("/connect")
     public ResponseEntity<String> connect(@RequestBody DbLoginRequestDTO request) {
+
+        //Log information about request type and content
+        log.info("Received database connection request for host={}, port={}, user={}",
+                request.getHost(), request.getPort(), request.getUsername());
+
         try {
+            log.info("Attempting to connect to database...");
             dataSourceManager.initDataSource(request);
             return ResponseEntity.ok("Connected successfully");
         }
         catch (Exception e) {
+            log.error("Database connection failed: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Connection failed: " + e.getMessage());
         }
 

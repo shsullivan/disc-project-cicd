@@ -55,6 +55,13 @@ pipeline {
                 bat '"C:\\Program Files\\jmeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat" -n -t tests\\loadtest.jmx -l tests\\results.jtl'
             }
         }
+
+        stage('Archive Logs') {
+            steps {
+                echo 'Archiving logs'
+                archiveArtifacts artifacts: 'backend/logs/*.log', fingerprint: true
+            }
+        }
     }
 
     post {
