@@ -43,7 +43,8 @@ pipeline {
 
         stage('Load Test Backend') {
             steps {
-                bat 'C:\\Program Files\\jmeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat -n -t tests\\loadtest.jmx -l tests\\results.jtl'
+                echo 'Performing backend loadtest'
+                bat '"C:\\Program Files\\jmeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat" -n -t tests\\loadtest.jmx -l tests\\results.jtl'
 
             }
         }
