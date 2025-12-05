@@ -7,7 +7,7 @@ pipeline {
 
     tools {
         maven  'Maven-3.9'
-        nodejs 'Node25'
+        nodejs 'NodeJSManual'
     }
 
     stages {
