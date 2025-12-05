@@ -122,22 +122,21 @@
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
         </HTTPSamplerProxy>
-        <hashTree>
-          <JSR223Listener guiclass="TestBeanGUI" testclass="JSR223Listener" testname="ErrorListener">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">if (!prev.isSuccessful()) {
+        <hashTree/>
+        <JSR223Listener guiclass="TestBeanGUI" testclass="JSR223Listener" testname="ErrorListener" enabled="true">
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="script">if (!prev.isSuccessful()) {
    prev.getAssertionResults().each { assertionResult -&gt;
        if (assertionResult.failure) {
            println(&apos;Request &apos; + prev.getSampleLabel() + &apos; failed with &apos; + assertionResult.failureMessage)
        }
    }
 }</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Listener>
-          <hashTree/>
-        </hashTree>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+        </JSR223Listener>
+        <hashTree/>
       </hashTree>
     </hashTree>
   </hashTree>
